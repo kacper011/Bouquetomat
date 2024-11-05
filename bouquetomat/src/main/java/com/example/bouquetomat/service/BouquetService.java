@@ -6,6 +6,8 @@ import com.example.bouquetomat.repository.BouquetRepository;
 import com.example.bouquetomat.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BouquetService {
 
@@ -37,5 +39,14 @@ public class BouquetService {
         notificationService.sendNotification(order);
 
         return "Zakupiono bukiet numer " + bouquet.getNumber();
+    }
+
+    public List<Bouquet> getAllBouquets() {
+        return bouquetRepository.findAll();
+    }
+
+    public Bouquet createBouquet(Bouquet bouquet) {
+        bouquet.setIsAvailable(true);
+        return bouquetRepository.save(bouquet);
     }
 }
