@@ -28,4 +28,11 @@ public class Notification {
     private LocalDateTime sentDate;
 
     private String notificationType; //"EMAIL" / "SMS"
+
+    public Notification(BouquetOrder order, String message, String notificationType) {
+        this.order = order;
+        this.message = message;
+        this.sentDate = LocalDateTime.now();
+        this.notificationType = notificationType;
+    }
 }

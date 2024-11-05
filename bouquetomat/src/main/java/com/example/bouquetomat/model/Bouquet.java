@@ -23,4 +23,5 @@ public class Bouquet {
     private Double price;
 
     private Boolean isAvailable;
+
 }

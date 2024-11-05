@@ -30,4 +30,10 @@ public class BouquetOrder {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    public BouquetOrder(Bouquet bouquet, Double totalPrice) {
+        this.bouquet = bouquet;
+        this.orderDate = LocalDateTime.now();
+        this.totalPrice = totalPrice;
+        this.status = OrderStatus.COMPLETED;
+    }
 }
