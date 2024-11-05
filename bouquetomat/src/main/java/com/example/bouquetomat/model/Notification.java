@@ -21,7 +21,7 @@ public class Notification {
 
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    private BouquetOrder order;
 
     private String message;
 
