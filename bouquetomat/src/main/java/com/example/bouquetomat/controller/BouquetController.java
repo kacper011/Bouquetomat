@@ -30,7 +30,7 @@ public class BouquetController {
         return ResponseEntity.ok(createdBouquet);
     }
 
-    @PostMapping("/{bouquetId}/purchase")
+    @PostMapping("/{bouquetId}/buy")
     public ResponseEntity<String> buyBouquet(@PathVariable Long bouquetId) {
         String result = bouquetService.buyBouquet(bouquetId);
         return ResponseEntity.ok(result);
