@@ -23,7 +23,7 @@ public class NotificationService {
         String notificationType = "EMAIL";
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("kacper-szabatxd@wp.pl");
+        message.setTo("bbouquetomat@gmail.com");
         message.setSubject(subject);
         message.setText(body);
 

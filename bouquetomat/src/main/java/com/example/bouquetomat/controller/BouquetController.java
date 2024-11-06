@@ -29,4 +29,10 @@ public class BouquetController {
         Bouquet createdBouquet = bouquetService.createBouquet(bouquet);
         return ResponseEntity.ok(createdBouquet);
     }
+
+    @PostMapping("/{bouquetId}/purchase")
+    public ResponseEntity<String> buyBouquet(@PathVariable Long bouquetId) {
+        String result = bouquetService.buyBouquet(bouquetId);
+        return ResponseEntity.ok(result);
+    }
 }

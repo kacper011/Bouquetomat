@@ -4,6 +4,7 @@ import com.example.bouquetomat.model.Bouquet;
 import com.example.bouquetomat.model.BouquetOrder;
 import com.example.bouquetomat.repository.BouquetRepository;
 import com.example.bouquetomat.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class BouquetService {
         this.notificationService = notificationService;
     }
 
-
+    @Transactional
     public String buyBouquet(Long bouquetId) {
         Bouquet bouquet = bouquetRepository.findById(bouquetId)
                 .orElseThrow(() -> new RuntimeException("Nie ma takiego bukietu"));
@@ -38,7 +39,7 @@ public class BouquetService {
 
         notificationService.sendNotification(order);
 
-        return "Zakupiono bukiet numer " + bouquet.getNumber();
+        return "Zakupiono bukiet o numerze " + bouquet.getNumber();
     }
 
     public List<Bouquet> getAllBouquets() {
