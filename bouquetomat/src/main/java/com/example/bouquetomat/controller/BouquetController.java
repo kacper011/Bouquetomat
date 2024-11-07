@@ -30,9 +30,15 @@ public class BouquetController {
         return ResponseEntity.ok(createdBouquet);
     }
 
-    @PostMapping("/{bouquetId}/buy")
-    public ResponseEntity<String> buyBouquet(@PathVariable Long bouquetId) {
-        String result = bouquetService.buyBouquet(bouquetId);
+    @PostMapping("/buy/{slotNumber}")
+    public ResponseEntity<String> buyBouquet(@PathVariable Integer slotNumber) {
+        String result = bouquetService.buyBouquet(slotNumber);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/add/{slotNumber}")
+    public ResponseEntity<String> addBouquet(@PathVariable Integer slotNumber, @RequestParam String name, @RequestParam Double price) {
+        String result = bouquetService.addBouquetToSlot(slotNumber, name, price);
         return ResponseEntity.ok(result);
     }
 }

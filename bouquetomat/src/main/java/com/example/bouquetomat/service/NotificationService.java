@@ -19,7 +19,7 @@ public class NotificationService {
 
     public void sendNotification(BouquetOrder order) {
         String subject = "Bukiet sprzedany!";
-        String body = "Bukiet o numerze " + order.getBouquet().getNumber() + " został sprzedany!";
+        String body = "Bukiet o numerze " + order.getBouquet().getSlotNumber() + " został sprzedany!";
         String notificationType = "EMAIL";
 
         SimpleMailMessage message = new SimpleMailMessage();
