@@ -19,3 +19,6 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
       mail.smtp.ssl.trust: smtp.gmail.com
+
+  flyway:
+    enabled: false

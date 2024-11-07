@@ -48,14 +48,7 @@ public class BouquetService {
         Bouquet bouquet = bouquetRepository.findBySlotNumber(slotNumber)
                 .orElse(null);
 
-        if (bouquet != null && !bouquet.getIsAvailable()) {
-            bouquet.setIsAvailable(true);
-            bouquet.setStatus(BouquetStatus.AVAILABLE);
-            bouquet.setName(name);
-            bouquet.setPrice(price);
-            bouquetRepository.save(bouquet);
-            return "Bukiet został dodany w okienko numer " + slotNumber;
-        } else if (bouquet == null) {
+        if (bouquet == null) {
             bouquet = new Bouquet();
             bouquet.setSlotNumber(slotNumber);
             bouquet.setName(name);
@@ -64,9 +57,21 @@ public class BouquetService {
             bouquet.setStatus(BouquetStatus.AVAILABLE);
             bouquetRepository.save(bouquet);
             return "Nowy bukiet został dodany do okienka numer " + slotNumber;
-        } else {
-            return "Okienko numer " + slotNumber + " jest już dostępne.";
         }
+
+
+        if (bouquet.getIsAvailable()) {
+            return "Okienko numer " + slotNumber + " jest już zajęte przez dostępny bukiet.";
+        }
+
+
+        bouquet.setIsAvailable(true);
+        bouquet.setStatus(BouquetStatus.AVAILABLE);
+        bouquet.setName(name);
+        bouquet.setPrice(price);
+        bouquetRepository.save(bouquet);
+
+        return "Bukiet został ponownie dostępny w okienku numer " + slotNumber;
     }
 
 
