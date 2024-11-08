@@ -28,13 +28,13 @@ public class BouquetService {
     }
 
     @Transactional
-    public String buyBouquet(Integer slotNumber) {
+    public String buyBouquet(Long bouquetID) {
 
-        Bouquet bouquet = bouquetRepository.findBySlotNumber(slotNumber)
+        Bouquet bouquet = bouquetRepository.findById(bouquetID)
                 .orElse(null);
 
-        if (bouquet == null) {
-            return "Okienko numer " + slotNumber + " nie istnieje.";
+        if (!bouquet.getIsAvailable()) {
+            return "Ten bukiet jest już niedostępny";
         }
 
         BouquetOrder order = new BouquetOrder(bouquet, bouquet.getPrice());
@@ -45,9 +45,9 @@ public class BouquetService {
             bouquet.setStatus(BouquetStatus.SOLD);
             bouquetRepository.save(bouquet);
             notificationService.sendNotification(order);
-            return "Bukiet z numerem " + slotNumber + " został zakupiony!";
+            return "Bukiet z numerem " + bouquetID + " został zakupiony!";
         } else {
-            return "Bukiet w okienku numer " + slotNumber + " jest już niedostępny.";
+            return "Bukiet z id " + bouquetID + " jest już niedostępny.";
         }
     }
 
@@ -88,6 +88,13 @@ public class BouquetService {
     }
 
     public Bouquet createBouquet(Bouquet bouquet) {
+        Bouquet existingBouquet = bouquetRepository.findBySlotNumberAndStatus(bouquet.getSlotNumber(), BouquetStatus.AVAILABLE)
+                .orElse(null);
+
+        if (existingBouquet != null) {
+            throw new IllegalArgumentException("Okienko numer " + bouquet.getSlotNumber() + " jest już zajęte przez dostępny bukiet.");
+        }
+
         bouquet.setStatus(BouquetStatus.AVAILABLE);
         return bouquetRepository.save(bouquet);
     }

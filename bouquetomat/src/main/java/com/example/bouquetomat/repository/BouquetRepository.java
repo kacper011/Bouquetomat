@@ -11,4 +11,6 @@ public interface BouquetRepository extends JpaRepository<Bouquet, Long> {
 
     List<Bouquet> findByStatus(BouquetStatus status);
     Optional<Bouquet> findBySlotNumber(Integer slotNumber);
+
+    Optional<Bouquet> findBySlotNumberAndStatus(Integer slotNumber, BouquetStatus available);
 }
