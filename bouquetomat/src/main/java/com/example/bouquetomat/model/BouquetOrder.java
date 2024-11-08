@@ -30,6 +30,9 @@ public class BouquetOrder {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Notification notification;
+
     public BouquetOrder(Bouquet bouquet, Double totalPrice) {
         this.bouquet = bouquet;
         this.orderDate = LocalDateTime.now();
