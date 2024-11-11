@@ -88,6 +88,11 @@ public class BouquetService {
     }
 
     public Bouquet createBouquet(Bouquet bouquet) {
+
+        if (bouquet.getSlotNumber() < 1 || bouquet.getSlotNumber() > 6) {
+            throw new IllegalArgumentException("Numer slotu musi być pomiędzy 1 a 6.");
+        }
+
         Bouquet existingBouquet = bouquetRepository.findBySlotNumberAndStatus(bouquet.getSlotNumber(), BouquetStatus.AVAILABLE)
                 .orElse(null);
 
@@ -96,6 +101,8 @@ public class BouquetService {
         }
 
         bouquet.setStatus(BouquetStatus.AVAILABLE);
+
         return bouquetRepository.save(bouquet);
     }
+
 }

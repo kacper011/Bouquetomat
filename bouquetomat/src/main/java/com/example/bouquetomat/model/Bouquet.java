@@ -1,6 +1,8 @@
 package com.example.bouquetomat.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +20,8 @@ public class Bouquet {
     private Long id;
 
     private String name;
-
+    @Min(1)
+    @Max(6)
     private Integer slotNumber;
 
     private Double price;
