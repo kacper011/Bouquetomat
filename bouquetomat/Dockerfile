@@ -1,7 +1,7 @@
-# Użyj oficjalnej wersji Javy jako obrazu bazowego
 FROM openjdk:21-jdk
 
-# Określ katalog roboczy w kontenerze
+
+
 WORKDIR /app
 
 # Skopiuj plik JAR aplikacji do kontenera
