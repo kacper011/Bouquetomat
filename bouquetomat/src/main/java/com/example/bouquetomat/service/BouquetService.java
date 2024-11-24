@@ -8,7 +8,9 @@ import com.example.bouquetomat.repository.BouquetRepository;
 import com.example.bouquetomat.repository.NotificationRepository;
 import com.example.bouquetomat.repository.OrderRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -51,38 +53,6 @@ public class BouquetService {
         }
     }
 
-    public String addBouquetToSlot(Integer slotNumber, String name, Double price) {
-
-        Bouquet bouquet = bouquetRepository.findBySlotNumber(slotNumber)
-                .orElse(null);
-
-        if (bouquet == null) {
-            bouquet = new Bouquet();
-            bouquet.setSlotNumber(slotNumber);
-            bouquet.setName(name);
-            bouquet.setPrice(price);
-            bouquet.setIsAvailable(true);
-            bouquet.setStatus(BouquetStatus.AVAILABLE);
-            bouquetRepository.save(bouquet);
-            return "Nowy bukiet został dodany do okienka numer " + slotNumber;
-        }
-
-
-        if (bouquet.getStatus() == BouquetStatus.AVAILABLE) {
-            return "Okienko numer " + slotNumber + " jest już zajęte przez dostępny bukiet.";
-        }
-
-
-        bouquet.setIsAvailable(true);
-        bouquet.setStatus(BouquetStatus.AVAILABLE);
-        bouquet.setName(name);
-        bouquet.setPrice(price);
-        bouquetRepository.save(bouquet);
-
-        return "Bukiet został ponownie dostępny w okienku numer " + slotNumber;
-    }
-
-
     public List<Bouquet> getAllBouquets() {
         return bouquetRepository.findByStatus(BouquetStatus.AVAILABLE);
     }
@@ -90,14 +60,14 @@ public class BouquetService {
     public Bouquet createBouquet(Bouquet bouquet) {
 
         if (bouquet.getSlotNumber() < 1 || bouquet.getSlotNumber() > 6) {
-            throw new IllegalArgumentException("Numer slotu musi być pomiędzy 1 a 6.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Numer slotu musi być pomiędzy 1 a 6.");
         }
 
         Bouquet existingBouquet = bouquetRepository.findBySlotNumberAndStatus(bouquet.getSlotNumber(), BouquetStatus.AVAILABLE)
                 .orElse(null);
 
         if (existingBouquet != null) {
-            throw new IllegalArgumentException("Okienko numer " + bouquet.getSlotNumber() + " jest już zajęte przez dostępny bukiet.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Okienko numer " + bouquet.getSlotNumber() + " jest już zajęte przez dostępny bukiet.");
         }
 
         bouquet.setStatus(BouquetStatus.AVAILABLE);

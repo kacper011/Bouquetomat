@@ -38,10 +38,4 @@ public class BouquetController {
         String result = bouquetService.buyBouquet(bouquetId);
         return ResponseEntity.ok(result);
     }
-
-    @PostMapping("/add/{slotNumber}")
-    public ResponseEntity<String> addBouquet(@PathVariable Integer slotNumber, @RequestParam String name, @RequestParam Double price) {
-        String result = bouquetService.addBouquetToSlot(slotNumber, name, price);
-        return ResponseEntity.ok(result);
-    }
 }
