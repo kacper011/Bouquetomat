@@ -8,6 +8,8 @@ import com.example.bouquetomat.repository.BouquetRepository;
 import com.example.bouquetomat.repository.NotificationRepository;
 import com.example.bouquetomat.repository.OrderRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,6 +23,7 @@ public class BouquetService {
     private final OrderRepository orderRepository;
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
+
 
     public BouquetService(BouquetRepository bouquetRepository, OrderRepository orderRepository, NotificationService notificationService, NotificationRepository notificationRepository) {
         this.bouquetRepository = bouquetRepository;
@@ -60,19 +63,20 @@ public class BouquetService {
     public Bouquet createBouquet(Bouquet bouquet) {
 
         if (bouquet.getSlotNumber() < 1 || bouquet.getSlotNumber() > 6) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Numer slotu musi być pomiędzy 1 a 6.");
+            throw new IllegalArgumentException("Numer slotu musi być pomiędzy 1 a 6.");
         }
 
         Bouquet existingBouquet = bouquetRepository.findBySlotNumberAndStatus(bouquet.getSlotNumber(), BouquetStatus.AVAILABLE)
                 .orElse(null);
 
         if (existingBouquet != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Okienko numer " + bouquet.getSlotNumber() + " jest już zajęte przez dostępny bukiet.");
+            throw new IllegalArgumentException("Okienko numer " + bouquet.getSlotNumber() + " jest już zajęte przez dostępny bukiet.");
         }
 
         bouquet.setStatus(BouquetStatus.AVAILABLE);
 
         return bouquetRepository.save(bouquet);
     }
+
 
 }
