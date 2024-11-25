@@ -63,5 +63,27 @@ class BouquetServiceTest {
         verify(notificationService, times(1)).sendNotification(any(BouquetOrder.class));
     }
 
+    @DisplayName("Buy Bouquet Bouquet Not Available")
+    @Test
+    void testBuyBouquetBouquetNotAvailable() {
+
+        //Given
+        Long bouquetId = 2L;
+        Bouquet bouquet = new Bouquet();
+        bouquet.setId(bouquetId);
+        bouquet.setIsAvailable(false);
+
+        when(bouquetRepository.findById(bouquetId)).thenReturn(Optional.of(bouquet));
+
+        //When
+        String result = bouquetService.buyBouquet(bouquetId);
+
+        //Then
+        assertEquals("Ten bukiet jest już niedostępny", result);
+        verify(orderRepository, never()).save(any(BouquetOrder.class));
+        verify(notificationService, never()).sendNotification(any(BouquetOrder.class));
+        verify(bouquetRepository, never()).save(bouquet);
+    }
+
 
 }
