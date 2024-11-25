@@ -36,7 +36,7 @@ class BouquetServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-
+    //Unit Tests
 
     @DisplayName("Buy Bouquet Successful Purchase")
     @Test
@@ -83,6 +83,27 @@ class BouquetServiceTest {
         verify(orderRepository, never()).save(any(BouquetOrder.class));
         verify(notificationService, never()).sendNotification(any(BouquetOrder.class));
         verify(bouquetRepository, never()).save(bouquet);
+    }
+
+    @DisplayName("Buy Bouquet Bouquet Not Found")
+    @Test
+    void testBuyBouquetBouquetNotFound() {
+
+        //Given
+        Long bouquetId = 2L;
+
+        when(bouquetRepository.findById(bouquetId)).thenReturn(Optional.empty());
+
+        //When
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            bouquetService.buyBouquet(bouquetId);
+        });
+
+        //Then
+        assertNotNull(exception);
+        verify(orderRepository, never()).save(any(BouquetOrder.class));
+        verify(notificationService, never()).sendNotification(any(BouquetOrder.class));
+        verify(bouquetRepository, never()).save(any(Bouquet.class));
     }
 
 
