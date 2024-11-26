@@ -178,4 +178,29 @@ class BouquetServiceTest {
         assertEquals("Numer slotu musi być pomiędzy 1 a 6.", exception.getMessage());
         verifyNoInteractions(bouquetRepository);
     }
+
+    @DisplayName("Create Bouquet Slot Already Taken")
+    @Test
+    void testCreateBouquetSlotAlreadyTaken() {
+
+        //Given
+        Bouquet bouquet = new Bouquet();
+        bouquet.setSlotNumber(3);
+        bouquet.setName("Roses");
+
+        Bouquet existingBouquet = new Bouquet();
+        existingBouquet.setSlotNumber(3);
+        existingBouquet.setStatus(BouquetStatus.AVAILABLE);
+
+        when(bouquetRepository.findBySlotNumberAndStatus(3, BouquetStatus.AVAILABLE))
+                .thenReturn(Optional.of(existingBouquet));
+
+        //When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> bouquetService.createBouquet(bouquet));
+
+        assertEquals("Okienko numer 3 jest już zajęte przez dostępny bukiet.", exception.getMessage());
+        verify(bouquetRepository, times(1)).findBySlotNumberAndStatus(3, BouquetStatus.AVAILABLE);
+        
+    }
 }
