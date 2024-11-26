@@ -3,16 +3,11 @@ package com.example.bouquetomat.service;
 import com.example.bouquetomat.model.Bouquet;
 import com.example.bouquetomat.model.BouquetOrder;
 import com.example.bouquetomat.model.BouquetStatus;
-import com.example.bouquetomat.model.Notification;
 import com.example.bouquetomat.repository.BouquetRepository;
 import com.example.bouquetomat.repository.NotificationRepository;
 import com.example.bouquetomat.repository.OrderRepository;
 import jakarta.transaction.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 

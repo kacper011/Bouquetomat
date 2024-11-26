@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -104,6 +106,36 @@ class BouquetServiceTest {
         verify(orderRepository, never()).save(any(BouquetOrder.class));
         verify(notificationService, never()).sendNotification(any(BouquetOrder.class));
         verify(bouquetRepository, never()).save(any(Bouquet.class));
+    }
+
+    @DisplayName("Get All Bouquets")
+    @Test
+    void testGetAllBouquets() {
+
+        //Given
+        Bouquet bouquet1 = new Bouquet();
+        bouquet1.setId(1L);
+        bouquet1.setName("Roses");
+        bouquet1.setIsAvailable(true);
+
+        Bouquet bouquet2 = new Bouquet();
+        bouquet2.setId(2L);
+        bouquet2.setName("Tulips");
+        bouquet2.setIsAvailable(true);
+
+        List<Bouquet> mockBouquets = Arrays.asList(bouquet1, bouquet2);
+        when(bouquetRepository.findByStatus(BouquetStatus.AVAILABLE)).thenReturn(mockBouquets);
+
+        //When
+        List<Bouquet> result = bouquetService.getAllBouquets();
+
+        //Then
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("Roses", result.get(0).getName());
+        assertEquals("Tulips", result.get(1).getName());
+
+        verify(bouquetRepository, times(1)).findByStatus(BouquetStatus.AVAILABLE);
     }
 
 
