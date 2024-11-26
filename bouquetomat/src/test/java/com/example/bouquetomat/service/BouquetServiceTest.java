@@ -138,5 +138,28 @@ class BouquetServiceTest {
         verify(bouquetRepository, times(1)).findByStatus(BouquetStatus.AVAILABLE);
     }
 
+    @DisplayName("Create Bouquet Success")
+    @Test
+    void testCreateBouquetSuccess() {
 
+        //Given
+        Bouquet bouquet = new Bouquet();
+        bouquet.setSlotNumber(3);
+        bouquet.setName("Roses");
+
+        when(bouquetRepository.findBySlotNumberAndStatus(3, BouquetStatus.AVAILABLE)).thenReturn(Optional.empty());
+
+        when(bouquetRepository.save(bouquet)).thenReturn(bouquet);
+
+        //When
+        Bouquet result = bouquetService.createBouquet(bouquet);
+
+        //Then
+        assertNotNull(result);
+        assertEquals(3, result.getSlotNumber());
+        assertEquals(BouquetStatus.AVAILABLE, result.getStatus());
+
+        verify(bouquetRepository, times(1)).findBySlotNumberAndStatus(3, BouquetStatus.AVAILABLE);
+        verify(bouquetRepository, times(1)).save(bouquet);
+    }
 }
