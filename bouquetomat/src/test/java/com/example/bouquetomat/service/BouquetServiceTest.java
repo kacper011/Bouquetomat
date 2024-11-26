@@ -162,4 +162,20 @@ class BouquetServiceTest {
         verify(bouquetRepository, times(1)).findBySlotNumberAndStatus(3, BouquetStatus.AVAILABLE);
         verify(bouquetRepository, times(1)).save(bouquet);
     }
+
+    @DisplayName("Create Bouquet Invalid Slot Number")
+    @Test
+    void testCreateBouquetInvalidSlotNumber() {
+
+        //Given
+        Bouquet bouquet = new Bouquet();
+        bouquet.setSlotNumber(7);
+
+        //When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> bouquetService.createBouquet(bouquet));
+
+        assertEquals("Numer slotu musi być pomiędzy 1 a 6.", exception.getMessage());
+        verifyNoInteractions(bouquetRepository);
+    }
 }
