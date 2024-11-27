@@ -201,6 +201,6 @@ class BouquetServiceTest {
 
         assertEquals("Okienko numer 3 jest już zajęte przez dostępny bukiet.", exception.getMessage());
         verify(bouquetRepository, times(1)).findBySlotNumberAndStatus(3, BouquetStatus.AVAILABLE);
-        
+
     }
 }
