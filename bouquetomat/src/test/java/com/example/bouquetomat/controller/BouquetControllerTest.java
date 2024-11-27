@@ -3,6 +3,7 @@ package com.example.bouquetomat.controller;
 import com.example.bouquetomat.model.Bouquet;
 import com.example.bouquetomat.model.BouquetStatus;
 import com.example.bouquetomat.service.BouquetService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,10 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -28,6 +31,9 @@ class BouquetControllerTest {
 
     @MockBean
     private BouquetService bouquetService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @DisplayName("Get All Bouquets Should Return Bouquet List")
     @Test
@@ -51,6 +57,27 @@ class BouquetControllerTest {
                 .andExpect(jsonPath("$[1].id").value(2))
                 .andExpect(jsonPath("$[1].name").value("Tulip Bouquet"))
                 .andExpect(jsonPath("$[1].price").value(19.99));
+
+    }
+
+    @DisplayName("Create Bouquet Should Return Created Bouquet")
+    @Test
+    public void testCreateBouquetShouldReturnCreatedBouquet() throws Exception {
+
+        //Given
+        Bouquet bouquet = new Bouquet(1L, "Rose Bouquet", 2, 29.99, true, BouquetStatus.AVAILABLE);
+
+        //When
+        when(bouquetService.createBouquet(any(Bouquet.class))).thenReturn(bouquet);
+
+        //Then
+        mockMvc.perform(post("/api/bouquets")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(bouquet)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Rose Bouquet"))
+                .andExpect(jsonPath("$.price").value(29.99));
 
     }
 
