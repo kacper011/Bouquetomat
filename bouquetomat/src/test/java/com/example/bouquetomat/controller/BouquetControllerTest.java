@@ -17,11 +17,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
 class BouquetControllerTest {
@@ -79,6 +78,26 @@ class BouquetControllerTest {
                 .andExpect(jsonPath("$.name").value("Rose Bouquet"))
                 .andExpect(jsonPath("$.price").value(29.99));
 
+    }
+
+    @DisplayName("Buy Bouquet Should Return Ok With Result")
+    @Test
+    public void testBuyBouquetShouldReturnOkWithResult() throws Exception {
+
+        //Given
+        Long bouquetId = 1L;
+        String expectedResponse = "Bouquet purchased successfully!";
+
+        //When
+        when(bouquetService.buyBouquet(bouquetId)).thenReturn(expectedResponse);
+
+        //Then
+        mockMvc.perform(post("/api/bouquets/buy/{bouquetId}", bouquetId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResponse));
+
+        verify(bouquetService, times(1)).buyBouquet(bouquetId);
     }
 
 }
