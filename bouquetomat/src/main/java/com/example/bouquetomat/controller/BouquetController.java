@@ -38,4 +38,10 @@ public class BouquetController {
         String result = bouquetService.buyBouquet(bouquetId);
         return ResponseEntity.ok(result);
     }
+
+    @DeleteMapping("/delete/{bouquetId}")
+    public ResponseEntity<String> deleteBouquet(@PathVariable Long bouquetId) {
+        String result = bouquetService.deleteBouquet(bouquetId);
+        return ResponseEntity.ok(result);
+    }
 }

@@ -6,6 +6,7 @@ import com.example.bouquetomat.model.BouquetStatus;
 import com.example.bouquetomat.repository.BouquetRepository;
 import com.example.bouquetomat.repository.NotificationRepository;
 import com.example.bouquetomat.repository.OrderRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -74,4 +75,13 @@ public class BouquetService {
     }
 
 
+    public String deleteBouquet(Long bouquetId) {
+
+        if (bouquetRepository.existsById(bouquetId)) {
+            bouquetRepository.deleteById(bouquetId);
+            return "Bouquet with ID " + bouquetId + " has been deleted successfully.";
+        } else {
+            throw new EntityNotFoundException("Bouquet with ID " + bouquetId + " not found.");
+        }
+    }
 }
