@@ -203,4 +203,20 @@ class BouquetServiceTest {
         verify(bouquetRepository, times(1)).findBySlotNumberAndStatus(3, BouquetStatus.AVAILABLE);
 
     }
+
+    @DisplayName("Delete Bouquet Success")
+    @Test
+    void testDeleteBouquetSuccess() {
+
+        //Given
+        Long bouquetId = 1L;
+        when(bouquetRepository.existsById(bouquetId)).thenReturn(true);
+
+        //When
+        String result = bouquetService.deleteBouquet(bouquetId);
+
+        //Then
+        verify(bouquetRepository).deleteById(bouquetId);
+        assertEquals("Bukiet o ID " + bouquetId + " został usunięty pomyślnie.", result);
+    }
 }

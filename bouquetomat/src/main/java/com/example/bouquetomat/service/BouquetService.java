@@ -79,7 +79,7 @@ public class BouquetService {
 
         if (bouquetRepository.existsById(bouquetId)) {
             bouquetRepository.deleteById(bouquetId);
-            return "Bouquet with ID " + bouquetId + " has been deleted successfully.";
+            return "Bukiet o ID " + bouquetId + " został usunięty pomyślnie.";
         } else {
             throw new EntityNotFoundException("Bouquet with ID " + bouquetId + " not found.");
         }
