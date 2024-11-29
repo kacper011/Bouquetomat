@@ -5,6 +5,7 @@ import com.example.bouquetomat.model.BouquetOrder;
 import com.example.bouquetomat.model.BouquetStatus;
 import com.example.bouquetomat.repository.BouquetRepository;
 import com.example.bouquetomat.repository.OrderRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -218,5 +219,23 @@ class BouquetServiceTest {
         //Then
         verify(bouquetRepository).deleteById(bouquetId);
         assertEquals("Bukiet o ID " + bouquetId + " został usunięty pomyślnie.", result);
+    }
+
+    @DisplayName("Delete Bouquet Not Found")
+    @Test
+    void testDeleteBouquetNotFound() {
+
+        //Given
+        Long bouquetId = 1L;
+        when(bouquetRepository.existsById(bouquetId)).thenReturn(false);
+
+        //When & Then
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+                bouquetService.deleteBouquet(bouquetId);
+        });
+        assertEquals("Bukiet o ID " + bouquetId + " nie został znaleziony.", exception.getMessage());
+
+        verify(bouquetRepository, never()).deleteById(anyLong());
+
     }
 }

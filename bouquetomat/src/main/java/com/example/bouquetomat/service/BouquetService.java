@@ -81,7 +81,7 @@ public class BouquetService {
             bouquetRepository.deleteById(bouquetId);
             return "Bukiet o ID " + bouquetId + " został usunięty pomyślnie.";
         } else {
-            throw new EntityNotFoundException("Bouquet with ID " + bouquetId + " not found.");
+            throw new EntityNotFoundException("Bukiet o ID " + bouquetId + " nie został znaleziony.");
         }
     }
 }
