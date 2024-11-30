@@ -6,12 +6,14 @@ import com.example.bouquetomat.service.BouquetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
+import com.example.bouquetomat.controller.BouquetController;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +23,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.assertj.core.api.Assertions.*;
+
 
 @WebMvcTest
 class BouquetControllerTest {
@@ -30,6 +34,9 @@ class BouquetControllerTest {
 
     @MockBean
     private BouquetService bouquetService;
+
+    @InjectMocks
+    private BouquetController bouquetController;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -98,6 +105,25 @@ class BouquetControllerTest {
                 .andExpect(content().string(expectedResponse));
 
         verify(bouquetService, times(1)).buyBouquet(bouquetId);
+    }
+
+    @DisplayName("Delete Bouquet Should Return Success Message")
+    @Test
+    public void testDeleteBouquetShouldReturnSuccessMessage() {
+
+        //Given
+        Long bouquetId = 1L;
+        String successMessage = "Bukiet o ID " + bouquetId + " został usunięty pomyślnie.";
+        when(bouquetService.deleteBouquet(bouquetId)).thenReturn(successMessage);
+
+        //When
+        ResponseEntity<String> response = bouquetController.deleteBouquet(bouquetId);
+
+        //Then
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertThat(response.getBody()).isEqualTo(successMessage);
+
+        verify(bouquetService, times(1)).deleteBouquet(bouquetId);
     }
 
 }

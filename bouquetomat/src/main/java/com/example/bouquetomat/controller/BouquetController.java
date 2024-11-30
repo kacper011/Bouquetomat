@@ -16,7 +16,7 @@ import java.util.List;
 public class BouquetController {
 
     private final BouquetService bouquetService;
-    @Autowired
+
     public BouquetController(BouquetService bouquetService) {
         this.bouquetService = bouquetService;
     }
