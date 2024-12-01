@@ -3,7 +3,6 @@ package com.example.bouquetomat.controller;
 import com.example.bouquetomat.model.Bouquet;
 import com.example.bouquetomat.service.BouquetService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +40,7 @@ public class BouquetController {
 
     @DeleteMapping("/delete/{bouquetId}")
     public ResponseEntity<String> deleteBouquet(@PathVariable Long bouquetId) {
-        String result = bouquetService.deleteBouquet(bouquetId);
-        return ResponseEntity.ok(result);
+        bouquetService.deleteBouquet(bouquetId);
+        return ResponseEntity.ok("Bukiet o ID " + bouquetId + " został usunięty.");
     }
 }

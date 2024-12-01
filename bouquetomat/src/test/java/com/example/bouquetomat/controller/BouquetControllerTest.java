@@ -4,12 +4,18 @@ import com.example.bouquetomat.model.Bouquet;
 import com.example.bouquetomat.model.BouquetStatus;
 import com.example.bouquetomat.service.BouquetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,16 +24,16 @@ import com.example.bouquetomat.controller.BouquetController;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.assertj.core.api.Assertions.*;
 
 
-@WebMvcTest
-class BouquetControllerTest {
+@WebMvcTest(BouquetController.class)
+public class BouquetControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,6 +46,11 @@ class BouquetControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @DisplayName("Get All Bouquets Should Return Bouquet List")
     @Test
@@ -109,19 +120,19 @@ class BouquetControllerTest {
 
     @DisplayName("Delete Bouquet Should Return Success Message")
     @Test
-    public void testDeleteBouquetShouldReturnSuccessMessage() {
+    public void testDeleteBouquetShouldReturnSuccessMessage() throws Exception {
 
         //Given
         Long bouquetId = 1L;
-        String successMessage = "Bukiet o ID " + bouquetId + " został usunięty pomyślnie.";
-        when(bouquetService.deleteBouquet(bouquetId)).thenReturn(successMessage);
+        String expectedMessage = "Bukiet o ID " + bouquetId + " został usunięty.";
 
         //When
-        ResponseEntity<String> response = bouquetController.deleteBouquet(bouquetId);
+        when(bouquetService.deleteBouquet(bouquetId)).thenReturn(expectedMessage);
 
         //Then
-        assertThat(response.getStatusCode()).isEqualTo(200);
-        assertThat(response.getBody()).isEqualTo(successMessage);
+        mockMvc.perform(delete("/api/bouquets/delete/{bouquetId}", bouquetId))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedMessage));
 
         verify(bouquetService, times(1)).deleteBouquet(bouquetId);
     }
