@@ -41,6 +41,6 @@ public class BouquetController {
     @DeleteMapping("/delete/{bouquetId}")
     public ResponseEntity<String> deleteBouquet(@PathVariable Long bouquetId) {
         bouquetService.deleteBouquet(bouquetId);
-        return ResponseEntity.ok("Bukiet o ID " + bouquetId + " został usunięty.");
+        return ResponseEntity.ok("The bouquet with ID " + bouquetId + " has been deleted.");
     }
 }

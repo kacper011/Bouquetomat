@@ -126,7 +126,7 @@ public class BouquetControllerTest {
 
         //Given
         Long bouquetId = 1L;
-        String expectedMessage = "Bukiet o ID " + bouquetId + " został usunięty.";
+        String expectedMessage = "The bouquet with ID " + bouquetId + " has been deleted.";
 
         //When
         when(bouquetService.deleteBouquet(bouquetId)).thenReturn(expectedMessage);

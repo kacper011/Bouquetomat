@@ -58,7 +58,7 @@ class BouquetServiceTest {
         String result = bouquetService.buyBouquet(bouquetId);
 
         //Then
-        assertEquals("Bukiet z numerem 1 został zakupiony!", result);
+        assertEquals("The bouquet with number 1 has been purchased!", result);
         assertFalse(bouquet.getIsAvailable());
         assertEquals(BouquetStatus.SOLD, bouquet.getStatus());
         verify(bouquetRepository, times(1)).save(bouquet);
@@ -82,7 +82,7 @@ class BouquetServiceTest {
         String result = bouquetService.buyBouquet(bouquetId);
 
         //Then
-        assertEquals("Ten bukiet jest już niedostępny", result);
+        assertEquals("This bouquet is no longer available.", result);
         verify(orderRepository, never()).save(any(BouquetOrder.class));
         verify(notificationService, never()).sendNotification(any(BouquetOrder.class));
         verify(bouquetRepository, never()).save(bouquet);
@@ -176,7 +176,7 @@ class BouquetServiceTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> bouquetService.createBouquet(bouquet));
 
-        assertEquals("Numer slotu musi być pomiędzy 1 a 6.", exception.getMessage());
+        assertEquals("The slot number must be between 1 and 6.", exception.getMessage());
         verifyNoInteractions(bouquetRepository);
     }
 
@@ -200,7 +200,8 @@ class BouquetServiceTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> bouquetService.createBouquet(bouquet));
 
-        assertEquals("Okienko numer 3 jest już zajęte przez dostępny bukiet.", exception.getMessage());
+        assertEquals(
+                "Slot number 3 is already occupied by an available bouquet.", exception.getMessage());
         verify(bouquetRepository, times(1)).findBySlotNumberAndStatus(3, BouquetStatus.AVAILABLE);
 
     }
@@ -218,7 +219,7 @@ class BouquetServiceTest {
 
         //Then
         verify(bouquetRepository).deleteById(bouquetId);
-        assertEquals("Bukiet o ID " + bouquetId + " został usunięty pomyślnie.", result);
+        assertEquals("The bouquet with ID " + bouquetId + " has been successfully deleted.", result);
     }
 
     @DisplayName("Delete Bouquet Not Found")
@@ -233,7 +234,7 @@ class BouquetServiceTest {
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
                 bouquetService.deleteBouquet(bouquetId);
         });
-        assertEquals("Bukiet o ID " + bouquetId + " nie został znaleziony.", exception.getMessage());
+        assertEquals("The bouquet with ID " + bouquetId + " was not found.", exception.getMessage());
 
         verify(bouquetRepository, never()).deleteById(anyLong());
 

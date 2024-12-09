@@ -35,7 +35,7 @@ public class BouquetService {
                 .orElse(null);
 
         if (!bouquet.getIsAvailable()) {
-            return "Ten bukiet jest już niedostępny";
+            return "This bouquet is no longer available.";
         }
 
         BouquetOrder order = new BouquetOrder(bouquet, bouquet.getPrice());
@@ -46,9 +46,9 @@ public class BouquetService {
             bouquet.setStatus(BouquetStatus.SOLD);
             bouquetRepository.save(bouquet);
             notificationService.sendNotification(order);
-            return "Bukiet z numerem " + bouquetID + " został zakupiony!";
+            return "The bouquet with number " + bouquetID + " has been purchased!";
         } else {
-            return "Bukiet z id " + bouquetID + " jest już niedostępny.";
+            return "The bouquet with ID " + bouquetID + " is no longer available.";
         }
     }
 
@@ -59,14 +59,14 @@ public class BouquetService {
     public Bouquet createBouquet(Bouquet bouquet) {
 
         if (bouquet.getSlotNumber() < 1 || bouquet.getSlotNumber() > 6) {
-            throw new IllegalArgumentException("Numer slotu musi być pomiędzy 1 a 6.");
+            throw new IllegalArgumentException("The slot number must be between 1 and 6.");
         }
 
         Bouquet existingBouquet = bouquetRepository.findBySlotNumberAndStatus(bouquet.getSlotNumber(), BouquetStatus.AVAILABLE)
                 .orElse(null);
 
         if (existingBouquet != null) {
-            throw new IllegalArgumentException("Okienko numer " + bouquet.getSlotNumber() + " jest już zajęte przez dostępny bukiet.");
+            throw new IllegalArgumentException("Slot number " + bouquet.getSlotNumber() + " is already occupied by an available bouquet.");
         }
 
         bouquet.setStatus(BouquetStatus.AVAILABLE);
@@ -79,9 +79,9 @@ public class BouquetService {
 
         if (bouquetRepository.existsById(bouquetId)) {
             bouquetRepository.deleteById(bouquetId);
-            return "Bukiet o ID " + bouquetId + " został usunięty pomyślnie.";
+            return "The bouquet with ID " + bouquetId + " has been successfully deleted.";
         } else {
-            throw new EntityNotFoundException("Bukiet o ID " + bouquetId + " nie został znaleziony.");
+            throw new EntityNotFoundException("The bouquet with ID " + bouquetId + " was not found.");
         }
     }
 }
