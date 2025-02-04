@@ -59,3 +59,26 @@ Example JSON to add bouquet {<br>
     "price": 79.99<br>
 }
 
+<br> <br>
+
+### 4. Application overview photos
+
+<br> <br> <br>
+
+Get all bouquets
+
+<img src="images/Get all bouquets 1.png" alt="Get all bouquets 1">
+<img src="images/Get all bouquets 2.png" alt="Get all bouquets 2">
+
+<br> <br>
+
+Buy bouquet
+
+<img src="images/Buy bouquet.png" alt="Buy bouquet">
+
+<br> <br>
+
+Gmail message
+
+<img src="images/Gmail message.png" alt="Gmail message">
+
