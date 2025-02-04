@@ -78,7 +78,47 @@ Buy bouquet
 
 <br> <br>
 
+The bouquet from box number 4 has been purchased
+
+<img src="images/The bouquet from box number 4 has been purchased.png" alt="The bouquet from box number 4 has been purchased">
+
+<br> <br>
+
 Gmail message
 
 <img src="images/Gmail message.png" alt="Gmail message">
+
+<br> <br>
+
+Console logs
+
+<img src="images/Console logs.png" alt="Console logs">
+
+<br> <br>
+
+Adding a new bouquet
+
+<img src="images/Adding a bouquet in slot number 4.png" alt="Adding a bouquet in slot number 4">
+
+<br> <br>
+
+The slot number must be between 1 and 6
+
+<img src="images/The slot number must be between 1 and 6.png" alt="The slot number must be between 1 and 6">
+
+<br> <br>
+
+Slot number 5 is already occupied by an available bouquet
+
+<img src="images/Slot number 5 is already occupied by an available bouquet.png" alt="Slot number 5 is already occupied by an available bouquet">
+
+<br> <br>
+
+Removal of bouquet after id
+
+<img src="images/Removal of bouquet after id.png" alt="Removal of bouquet after id">
+
+
+
+
 
