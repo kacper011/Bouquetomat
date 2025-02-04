@@ -19,8 +19,8 @@ public class NotificationService {
     private NotificationRepository notificationRepository;
     @Transactional
     public void sendNotification(BouquetOrder order) {
-        String subject = "Bukiet sprzedany!";
-        String body = "Bukiet o numerze " + order.getBouquet().getSlotNumber() + " został sprzedany!";
+        String subject = "Bouquet sold!";
+        String body = "Bouquet number " + order.getBouquet().getSlotNumber() + " has been sold!";
         String notificationType = "EMAIL";
 
         SimpleMailMessage message = new SimpleMailMessage();
@@ -29,10 +29,10 @@ public class NotificationService {
         message.setText(body);
 
         mailSender.send(message);
-        System.out.println("Email wysłany do: bbouquetomat@gmail.com");
+        System.out.println("Email sent to: bbouquetomat@gmail.com");
 
         Notification notification = new Notification(order, body, notificationType);
         notificationRepository.save(notification);
-        System.out.println("Powiadomienie zapisane w bazie: " + notification);
+        System.out.println("Notification saved in the database: " + notification);
     }
 }
