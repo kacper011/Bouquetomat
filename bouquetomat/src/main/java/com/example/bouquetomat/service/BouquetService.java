@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -53,7 +54,10 @@ public class BouquetService {
     }
 
     public List<Bouquet> getAllBouquets() {
-        return bouquetRepository.findByStatus(BouquetStatus.AVAILABLE);
+        return bouquetRepository.findByStatus(BouquetStatus.AVAILABLE)
+                .stream()
+                .sorted(Comparator.comparingInt(Bouquet::getSlotNumber))
+                .toList();
     }
 
     public Bouquet createBouquet(Bouquet bouquet) {
