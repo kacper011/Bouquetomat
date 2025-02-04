@@ -25,3 +25,8 @@ spring:
 
   flyway:
     enabled: false
+
+app:
+  name: Bouquetomat
+  version: 1.0.0
+  owner: Kacper Szabat
